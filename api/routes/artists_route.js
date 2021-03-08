@@ -9,8 +9,10 @@ router.post('/register-artist', (req, res) => {
         'name': artist.name,
         'record_house': artist.record_house,
         'birth_date': artist.birth_date,
+        'profile_picture': artist.profile_picture,
         'age': artist.age,
-        'albums': artist.albums
+        'albums': artist.albums,
+
     });
     new_artist.save((err, arts) => {
         if (err) {

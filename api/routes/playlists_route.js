@@ -4,11 +4,17 @@ const Playlists = require('../models/playlists_model');
 const router = new express.Router();
 
 router.post('/register-playlist', (req, res) => {
+    //objetos convertidos en cadenas de texto
     let playlist = JSON.parse(req.body.object);
 
     let new_playlist = new Playlists({
         'name': playlist.name
     });
+    //playlist son los datos que vienen del front
+    //tienen canciones y las recoremos y las metemos en el  de songs del lado del backend
+    playlist.songs.forEach(song => {
+        new_playlist.songs.push(song)
+    })
     new_playlist.save((err, playl) => {
         if (err) {
             res.json({

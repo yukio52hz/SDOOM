@@ -2,19 +2,20 @@
 
 const express = require('express');
 const Albums = require('../models/albums_model');
-const router = new express.Router();
+const router = express.Router();
 
 router.post('/register-album', (req, res) => {
-
     let album = JSON.parse(req.body.object);
-
     let new_album = new Albums({
-        'code': album.code,
         'name': album.name,
-        'realese_date': album.realese_date,
+        'release_date': album.release_date,
+        'album_cover': album.album_cover,
         'length_album': album.length_album,
-        'songs_list': album.songs_list
-
+    });
+    //recorro los datos que vienen de album me meto en su propieda de song_list
+    //guardo los id en la lista del album que guardo en la base de datos
+    album.songs_list.forEach(song => {
+        new_album.songs_list.push(song._id);
     });
     new_album.save((err, albm) => {
         if (err) {
@@ -24,28 +25,26 @@ router.post('/register-album', (req, res) => {
             });
         } else {
             res.json({
-                'msj': 'Album registrado',
+                'msj': 'Albums registrado',
                 albm
             });
         }
     });
-
 });
-
+//listar con subdocumentos
 router.get('/list-albums', (req, res) => {
-    Albums.find((err, list) => {
+    Albums.find().populate('songs_list').exec((err, list) => {
         if (err) {
             res.json({
-                'msj': 'Algo salio mal y no se pudo listar nada',
+                msj: 'Las canciones del album no sé pudieron listar',
                 err
-            })
+            });
         } else {
             res.json({
-                'msj': 'Albums listados',
                 list
-            })
+            });
         }
-    })
+    });
 });
 
 router.get('/search-albumName', (req, res) => {
