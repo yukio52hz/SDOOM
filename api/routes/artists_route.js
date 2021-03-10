@@ -30,23 +30,22 @@ router.post('/register-artist', (req, res) => {
 });
 
 router.get('/list-artists', (req, res) => {
-    Artists.find((err, list) => {
+    Artists.find().populate('albums').exec((err, list) => {
         if (err) {
             res.json({
-                'msj': 'Algo salio mal y no se pudo listar nada',
+                msj: 'Artistas listado',
                 err
-            })
+            });
         } else {
             res.json({
-                'msj': 'Artistas listados',
                 list
-            })
+            });
         }
-    })
+    });
 });
 
 router.get('/search-artistName', (req, res) => {
-    Users.findOne({ name: req.query.name }), ((err, artist) => {
+    Artists.findOne({ name: req.query.name }), ((err, artist) => {
         if (err) {
             res.json({
                 'msj': 'Algo salio mal y no se encontro el artista',
@@ -67,6 +66,53 @@ router.get('/search-artistName', (req, res) => {
         }
     });
 });
+router.put('/add-albumsArtist', (req, res) => {
+    let art = JSON.parse(req.body.object);
+    Artists.updateOne({ _id: art._id }, {
+        $set: {
+            albums: art.albums
 
+        }
+    }, (err, info) => {
+        if (err) {
+            res.json({
+                resultado: false,
+                msj: 'No se pudo agregar el album',
+                err
+            });
+        } else {
+            res.json({
+                resultado: true,
+                info
+            });
+        }
+    });
+});
+router.put('/modify-artist', (req, res) => {
+    let art = JSON.parse(req.body.object);
+    Artists.updateOne({ _id: art._id }, {
+        $set: {
+            name: art.name,
+            record_house: art.record_house,
+            birth_date: art.birth_date,
+            profile_picture: art.profile_picture,
+            age: art.age,
+        }
+    }, (err, info) => {
+        if (err) {
+            res.json({
+                resultado: false,
+                msj: 'No se pudo modificar el ejercicio',
+                err
+            });
+        } else {
+            res.json({
+                resultado: true,
+                info
+            });
+        }
+    });
+
+});
 
 module.exports = router;

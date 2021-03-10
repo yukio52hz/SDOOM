@@ -29,22 +29,21 @@ router.post('/register-playlist', (req, res) => {
         }
     });
 });
-
-router.get('/list-playlist', (req, res) => {
-    Playlists.find((err, list) => {
+router.get('/list-playlists', (req, res) => {
+    Playlists.find().populate('songs').exec((err, list) => {
         if (err) {
             res.json({
-                'msj': 'Algo salio mal y no se pudo listar nada',
+                msj: 'Playlists listadas',
                 err
-            })
+            });
         } else {
             res.json({
-                'msj': 'Artistas listados',
                 list
-            })
+            });
         }
-    })
+    });
 });
+
 
 router.get('/search-playlistName', (req, res) => {
     Users.findOne({ name: req.query.name }), ((err, song) => {

@@ -48,6 +48,64 @@ router.get('/list-users', (req, res) => {
     });
 });
 
+
+router.post('/log-in', (req, res) => {
+    let email = req.body.email;
+    let password = req.body.password;
+
+    Users.findOne({ email: email }, (err, user) => {
+        if (err) {
+            res.json({
+                msj: 'El correo electrónico o la contraseña no son correctos',
+                login: false,
+                err
+            });
+        } else {
+            if (user && user.password == password) {
+                res.json({
+                    _id: user._id,
+                    type: user.type,
+                    name: user.name,
+                    birth_date: user.birth_date,
+                    gender: user.gender,
+                    email: user.email,
+                    playlist: user.playlist,
+                    login: true
+                });
+            } else {
+                res.json({
+                    msj: 'El correo electrónico o la contraseña no son correctos',
+                    login: false,
+                    err
+                });
+            }
+
+
+        }
+    });
+});
+router.put('/add-playlistUser', (req, res) => {
+    let user = JSON.parse(req.body.object);
+    Users.updateOne({ _id: user._id }, {
+        $set: {
+            playlist: user.playlist
+
+        }
+    }, (err, info) => {
+        if (err) {
+            res.json({
+                resultado: false,
+                msj: 'No se pudo agregar la playlist',
+                err
+            });
+        } else {
+            res.json({
+                resultado: true,
+                info
+            });
+        }
+    });
+});
 router.get('/search-userName', (req, res) => {
     Users.findOne({ name: req.query.name }), ((err, user) => {
         if (err) {

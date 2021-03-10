@@ -80,15 +80,14 @@ router.get('/search-songName', (req, res) => {
     });
 });
 router.put('/modify-song', (req, res) => {
-    let modifySong = JSON.parse(req.body.object);
-
-    Songs.updateOne({ _id: modifySong._id }, {
+    let mSong = JSON.parse(req.body.object);
+    Songs.updateOne({ _id: mSong._id }, {
         $set: {
-            'name': modifySong.name,
-            'artist_name': modifySong.artist_name._id,
-            'length_song': modifySong.length_song,
-            'album': modifySong.album._id,
-            'song_cover': modifySong.song_cover,
+            name: mSong.name,
+            artist_name: mSong.artist_name,
+            length_song: mSong.length_song,
+            album: mSong.album,
+            song_cover: mSong.song_cover
         }
     }, (err, info) => {
         if (err) {
@@ -102,7 +101,6 @@ router.put('/modify-song', (req, res) => {
             });
         }
     });
-
 });
 
 module.exports = router;

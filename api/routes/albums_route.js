@@ -46,6 +46,28 @@ router.get('/list-albums', (req, res) => {
         }
     });
 });
+router.put('/modify-album', (req, res) => {
+    let album = JSON.parse(req.body.object);
+    Albums.updateOne({ _id: album._id }, {
+        $set: {
+            name: album.name,
+            release_date: album.release_date,
+            album_cover: album.album_cover,
+            length_album: album.length_album
+        }
+    }, (err, info) => {
+        if (err) {
+            res.json({
+                msj: 'No se pudo modificar',
+                err
+            });
+        } else {
+            res.json({
+                info
+            });
+        }
+    });
+});
 
 router.get('/search-albumName', (req, res) => {
     Users.findOne({ name: req.query.name }), ((err, album) => {
