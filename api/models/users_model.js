@@ -11,7 +11,7 @@ const schema_bodyUsers = new mongoose.Schema({
     'password': { type: String, require: true, unique: false },
     'password_confirmation': { type: String, require: true, unique: false },
     'profile_picture': { type: String, required: false, unique: false },
-    'playlist': [{ type: mongoose.Schema.Types.ObjectId, ref: 'Playlists' }],
+    'playlists': [{ type: mongoose.Schema.Types.ObjectId, ref: 'Playlists' }],
 });
 
 module.exports = mongoose.model('Users', schema_bodyUsers, 'users');

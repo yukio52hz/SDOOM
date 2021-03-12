@@ -46,21 +46,21 @@ router.get('/list-playlists', (req, res) => {
 
 
 router.get('/search-playlistName', (req, res) => {
-    Users.findOne({ name: req.query.name }), ((err, song) => {
+    Playlists.findOne({ name: req.query.name }), ((err, playlist) => {
         if (err) {
             res.json({
                 'msj': 'Algo salio mal y no se encontro la playlist',
                 err
             })
         } else {
-            if (song) {
+            if (playlist) {
                 res.json({
                     'msj': 'Estos son los datos de la playlist',
-                    song
+                    playlist
                 })
             } else {
                 res.json({
-                    'msj': 'Playlist no encotrado',
+                    'msj': 'Playlist no encotrada',
                 })
             }
 

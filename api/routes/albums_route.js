@@ -53,7 +53,8 @@ router.put('/modify-album', (req, res) => {
             name: album.name,
             release_date: album.release_date,
             album_cover: album.album_cover,
-            length_album: album.length_album
+            length_album: album.length_album,
+            songs_list: album.songs_list,
         }
     }, (err, info) => {
         if (err) {
