@@ -10,11 +10,13 @@ router.post('/register-user', (req, res) => {
     let new_user = new Users({
         'type': user.type,
         'name': user.name,
+        'nickname': user.nickname,
         'birth_date': user.birth_date,
         'gender': user.gender,
         'email': user.email,
         'password': user.password,
         'password_confirmation': user.password_confirmation,
+        'profile_picture': user.profile_picture,
         'playlist': user.playlist
     });
     new_user.save((err, usr) => {
@@ -66,9 +68,11 @@ router.post('/log-in', (req, res) => {
                     _id: user._id,
                     type: user.type,
                     name: user.name,
+                    nickname: user.nickname,
                     birth_date: user.birth_date,
                     gender: user.gender,
                     email: user.email,
+                    profile_picture: user.profile_picture,
                     playlist: user.playlist,
                     login: true
                 });
@@ -101,6 +105,25 @@ router.put('/add-playlistUser', (req, res) => {
         } else {
             res.json({
                 resultado: true,
+                info
+            });
+        }
+    });
+});
+router.put('/add-picUser', (req, res) => {
+    let user = JSON.parse(req.body.object);
+    Users.updateOne({ _id: user._id }, {
+        $set: {
+            profile_picture: user.profile_picture,
+        }
+    }, (err, info) => {
+        if (err) {
+            res.json({
+                msj: 'No se pudo modificar',
+                err
+            });
+        } else {
+            res.json({
                 info
             });
         }

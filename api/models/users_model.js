@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const schema_bodyUsers = new mongoose.Schema({
     'type': { type: String, required: true, unique: false },
     'name': { type: String, required: true, unique: false },
+    'nickname': { type: String, required: true, unique: true },
     'birth_date': { type: Date, required: true, unique: false },
     'gender': { type: String, required: true, unique: false },
     'email': { type: String, required: true, unique: true },
