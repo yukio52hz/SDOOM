@@ -17,7 +17,6 @@ router.post('/register-user', (req, res) => {
         'password': user.password,
         'password_confirmation': user.password_confirmation,
         'profile_picture': user.profile_picture,
-        'playlists': user.playlist
     });
     new_user.save((err, usr) => {
         if (err) {
@@ -33,20 +32,7 @@ router.post('/register-user', (req, res) => {
         }
     });
 });
-router.get('/list-usersPlaylists', (req, res) => {
-    Users.find().populate('playlists').exec((err, list) => {
-        if (err) {
-            res.json({
-                msj: 'La playlists no sé pudieron listar',
-                err
-            });
-        } else {
-            res.json({
-                list
-            });
-        }
-    });
-});
+
 router.get('/list-users', (req, res) => {
     Users.find((err, list) => {
         if (err) {
@@ -86,7 +72,6 @@ router.post('/log-in', (req, res) => {
                     gender: user.gender,
                     email: user.email,
                     profile_picture: user.profile_picture,
-                    playlists: user.playlists,
                     login: true
                 });
             } else {
@@ -101,27 +86,7 @@ router.post('/log-in', (req, res) => {
         }
     });
 });
-router.put('/add-playlistUser', (req, res) => {
-    let user = JSON.parse(req.body.object);
-    Users.updateOne({ _id: user._id }, {
-        $set: {
-            playlists: user.playlists
-        }
-    }, (err, info) => {
-        if (err) {
-            res.json({
-                resultado: false,
-                msj: 'No se pudo agregar la playlist',
-                err
-            });
-        } else {
-            res.json({
-                resultado: true,
-                info
-            });
-        }
-    });
-});
+
 router.put('/add-picUser', (req, res) => {
     let user = JSON.parse(req.body.object);
     Users.updateOne({ _id: user._id }, {

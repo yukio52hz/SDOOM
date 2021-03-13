@@ -8,7 +8,8 @@ router.post('/register-playlist', (req, res) => {
     let playlist = JSON.parse(req.body.object);
 
     let new_playlist = new Playlists({
-        'name': playlist.name
+        'name': playlist.name,
+        'owner': playlist.owner
     });
     //playlist son los datos que vienen del front
     //tienen canciones y las recoremos y las metemos en el  de songs del lado del backend
@@ -43,7 +44,28 @@ router.get('/list-playlists', (req, res) => {
         }
     });
 });
+router.put('/add-songsPLaylist', (req, res) => {
+    let playl = JSON.parse(req.body.object);
+    Playlists.updateOne({ _id: playl._id }, {
+        $set: {
+            songs: playl.songs
 
+        }
+    }, (err, info) => {
+        if (err) {
+            res.json({
+                resultado: false,
+                msj: 'No se pudo agregar a la playlist',
+                err
+            });
+        } else {
+            res.json({
+                resultado: true,
+                info
+            });
+        }
+    });
+});
 
 router.get('/search-playlistName', (req, res) => {
     Playlists.findOne({ name: req.query.name }), ((err, playlist) => {
